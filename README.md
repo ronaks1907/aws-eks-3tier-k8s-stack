@@ -73,7 +73,7 @@ git clone https://github.com/ronaks1907/aws-eks-3tier-k8s-stack.git
 cd aws-eks-3tier-k8s-stack/terraform
 ```
 
-### 2. Infra Provisioning 
+### 2. Terraform steps
 
 ```bash
 terraform init
@@ -96,7 +96,7 @@ kubectl apply -f k8s/
 ---
 
 ## 🐳 Docker Setup
-Build and push your Docker images:
+Build and push your Docker images to AWS ECR and mapped that ECR registry URI with specific frontend and backend yaml.
 
 ### Backend
 ```bash
