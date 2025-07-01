@@ -1,10 +1,49 @@
 # AWS EKS 3-Tier Kubernetes Stack
 
-This project demonstrates a complete 3-tier web application stack deployed on **Amazon EKS (Elastic Kubernetes Service)**. It includes:
+This project provides an end-to-end production-ready 3-tier architecture on AWS using Terraform and Kubernetes (EKS). It provisions the necessary cloud infrastructure and deploys a sample application with separate frontend, backend, and database layers.
 
+---
+
+## 🧭 Architecture Overview
+
+![Architecture Diagram](architecture/aws-eks-3tier-architecture.png)
+
+### 🔁 End-to-End Request Flow
+
+1. **User Request**:  
+   A user accesses the application through a browser. The request first hits the **Application Load Balancer (ALB)** in the **Public Subnet**.
+
+2. **Routing to Frontend**:  
+   The ALB forwards the request to the **Frontend Pod** running inside the **Private App Subnet (AZ1/AZ2)** via the **Ingress Controller**.
+
+3. **Frontend to Backend**:  
+   The Frontend Pod internally communicates with the **Backend Pod** (also running in Private Subnet) using Kubernetes services.
+
+4. **Backend to Database**:  
+   The Backend Pod connects securely to the **RDS (PostgreSQL/MySQL)** database located in the **Private DB Subnet** via **IAM authentication**.
+
+5. **Outbound Internet Access**:  
+   Any outbound traffic (e.g., image pull, updates) from the private subnets is routed through the **NAT Gateway** placed in the Public Subnet.
+
+6. **Response Flow**:  
+   The response follows the reverse path: RDS → Backend → Frontend → ALB → User.
+
+---
 - A **React** frontend served by **NGINX**
 - A **Node.js + Express** backend with **PostgreSQL**
 - Kubernetes deployment and service YAMLs to orchestrate everything on AWS EKS
+
+---
+
+## 📌 Features
+
+- **Infrastructure as Code** using Terraform
+- **3-Tier Application Stack**: Frontend, Backend, and Database
+- **Kubernetes on AWS (EKS)** with Auto Scaling
+- **Secure Networking** using VPC with public, private, and database subnets
+- **Application Deployment** using Kubernetes manifests
+- **Ingress Controller** with ALB
+- **IAM roles and security best practices**
 
 ---
 
@@ -12,7 +51,7 @@ This project demonstrates a complete 3-tier web application stack deployed on **
 
 | Folder          | Description                                       |
 |-----------------|---------------------------------------------------|
-| `architecture/` | Diagrams illustrating the system architecture     |
+| `architecture/` | Diagrams illustrating the deployment architecture |
 | `backend/`      | Node.js backend API with PostgreSQL integration   |
 | `frontend/`     | React frontend served using NGINX                 |
 | `k8s/`          | Kubernetes manifests for AWS EKS deployment       |
@@ -20,28 +59,34 @@ This project demonstrates a complete 3-tier web application stack deployed on **
 
 ---
 
-## 🚀 Features
+## 🚀 Getting Started
 
-- 🧩 Modular microservices-based structure
-- 🔐 JWT authentication for users
-- 🐘 PostgreSQL database support
-- ⚙️ Fully containerized using Docker
-- ☸️ Deployable on Kubernetes (EKS)
-- 📊 Pre-built YAMLs for easy deployment
+### Prerequisites
 
----
+- AWS Account and credentials (`aws configure`)
+- Terraform v1.4+
+- kubectl
+- AWS CLI
+- Docker (for local testing)
 
-## 🛠️ Getting Started
+### 1️⃣ Provision Infrastructure
 
 ### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/ronaks1907/aws-eks-3tier-k8s-stack.git
-cd aws-eks-3tier-k8s-stack
+cd aws-eks-3tier-k8s-stack/terraform
 ```
 
-### 2. Setup AWS CLI and EKS Cluster
-Ensure AWS CLI and kubectl are configured properly and EKS cluster is running.
+### 2. Infra Provisioning 
+
+```bash
+terraform init
+terraform plan
+terraform apply --auto-approve
+```
+
+### 2️⃣ Connect to EKS Cluster
 
 ```bash
 aws eks --region <your-region> update-kubeconfig --name <cluster-name>
@@ -119,11 +164,6 @@ npm start
 
 The diagram above illustrates the core components of our platform, including the API Gateway, microservices, and data layer. Communication flows are represented with arrows, and color codes denote deployment zones.
 
----
-
-## 📄 License
-
-This project is licensed under the [MIT License](LICENSE).
 
 ---
 
