@@ -14,7 +14,7 @@ function RegisterPage() {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5000/api/auth/register", {
+      await axios.post("http://k8s-appsalbgroup-88de771a7d-987095670.ap-south-1.elb.amazonaws.com/api/auth/register", {
         name,
         email,
         password,

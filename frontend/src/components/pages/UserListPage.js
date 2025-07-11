@@ -20,7 +20,7 @@ const UserListPage = () => {
   };
 
   const fetchUsers = async () => {
-    const res = await axios.get("http://localhost:5000/api/users", axiosConfig);
+    const res = await axios.get("http://k8s-appsalbgroup-88de771a7d-987095670.ap-south-1.elb.amazonaws.com/api/users", axiosConfig);
     setUsers(res.data);
   };
 
@@ -36,7 +36,7 @@ const UserListPage = () => {
     e.preventDefault();
     try {
       await axios.post(
-        "http://localhost:5000/api/users",
+        "http://k8s-appsalbgroup-88de771a7d-987095670.ap-south-1.elb.amazonaws.com/api/users",
         { ...formData, age: parseInt(formData.age) },
         axiosConfig
       );
@@ -51,7 +51,7 @@ const UserListPage = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/users/${id}`, axiosConfig);
+      await axios.delete(`http://k8s-appsalbgroup-88de771a7d-987095670.ap-south-1.elb.amazonaws.com/api/users/${id}`, axiosConfig);
       toast.info("User deleted.");
       fetchUsers();
     } catch (error) {

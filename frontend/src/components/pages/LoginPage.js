@@ -14,7 +14,7 @@ function LoginPage() {
 
   const handleLogin = async () => {
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/login", {
+      const res = await axios.post("http://k8s-appsalbgroup-88de771a7d-987095670.ap-south-1.elb.amazonaws.com/api/auth/login", {
         email,
         password,
       });
