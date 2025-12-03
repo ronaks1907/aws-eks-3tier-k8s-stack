@@ -9,6 +9,23 @@ const authRouter = require('./routes/authRoutes');
 app.use(cors());
 app.use(express.json());
 
+// Logging middleware
+app.use((req, res, next) => {
+  console.log(`➡️  ${req.method} ${req.url} — ${new Date().toISOString()}`);
+  next();
+});
+
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: "OK", message: "Backend is healthy" });
+});
+
+// Default welcome route (optional)
+app.get('/', (req, res) => {
+  res.send('🚀 Backend is running successfully!');
+});
+
+// Routes
 app.use('/users', usersRouter);
 app.use('/auth', authRouter);
 
